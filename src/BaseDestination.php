@@ -2,6 +2,7 @@
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 abstract class BaseDestination {
 
@@ -9,21 +10,35 @@ abstract class BaseDestination {
   const TEMPLATES = 'templates/';
   const SOURCES = 'sources/';
 
+  /*
+   * The taxonomy terms csv file.
+   */
+  const TAXONOMY_TERMS_CSV = 'taxonomy_terms.csv';
+
+  // To be initialized in the child classes.
   public $name;
 
+  /**
+   * @var Spreadsheet
+   */
   protected $spreadsheet;
 
-  public function __construct() {
-    $this->spreadsheet = new Spreadsheet();
-    $this->name = 'unnamed.xlsl';
+  protected $prefix;
+
+  public function __construct($prefix = '') {
+    $this->prefix = $prefix;
   }
 
   /**
    * Save the document.
    */
   public function save() {
+    if (!$this->spreadsheet) {
+      throw new Exception('The spreadsheet is not propertly loaded. It cannot be saved.');
+    }
+
     $writer = new Xlsx($this->spreadsheet);
-    $writer->save(self::DESTINATION . $this->name);
+    $writer->save(self::DESTINATION . $this->prefix . '_' . $this->name);
   }
 
   /**
@@ -34,10 +49,31 @@ abstract class BaseDestination {
    * @param string $value
    *   The value to be saved.
    *
-   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   * @throws \Exception
    */
   public function saveInCell($cell, $value) {
     $sheet = $this->spreadsheet->getActiveSheet();
     $sheet->setCellValue($cell, $value);
+  }
+
+  /**
+   * Copy the template into the new generated file in the destination.
+   */
+  protected function copy_template() {
+    $file = self::TEMPLATES . $this->name;
+    $newfile = self::DESTINATION . $this->prefix . '_' . $this->name;
+
+    if (!copy($file, $newfile)) {
+      throw new Exception('The template cannot be copied.');
+    }
+    $this->spreadsheet = IOFactory::load($newfile);;
+  }
+
+  /**
+   * Initialize the process before generate the file.
+   * @throws \Exception
+   */
+  protected function initialize() {
+    $this->copy_template();
   }
 }
