@@ -1,6 +1,6 @@
 <?php
 
-include 'BaseDestination.php';
+require_once 'src/BaseDestination.php';
 
 /**
  * Class TaxonomyTermsMapping to generate the file xxx_taxonomy_terms_mapping_template.xlsx.
@@ -12,8 +12,19 @@ class TaxonomyTermsMapping extends BaseDestination {
    */
   const NAME = 'taxonomy_terms_mapping_template.xlsx';
 
-  protected $currentRow;
+  /**
+   * A pointer to the taxonomy term file source.
+   *
+   * @var resource
+   */
   protected $taxonomyTermFileSource;
+
+  /**
+   * The current row.
+   *
+   * @var int
+   */
+  protected $currentRow;
 
   /**
    * TaxonomyTermsMapping constructor.
@@ -25,7 +36,7 @@ class TaxonomyTermsMapping extends BaseDestination {
     $this->name = self::NAME;
 
     // This template starts in A4.
-    $this->currentRow = '4';
+    $this->currentRow = 4;
   }
 
   /**
@@ -36,7 +47,7 @@ class TaxonomyTermsMapping extends BaseDestination {
 
     $this->taxonomyTermFileSource = fopen(self::SOURCES . $this->prefix . '/'. self::TAXONOMY_TERMS_CSV, 'r');
     if (!$this->taxonomyTermFileSource) {
-      throw new Exception('Source file cannot be oppened.');
+      throw new Exception('The source file cannot be oppened.');
     }
   }
 

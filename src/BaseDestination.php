@@ -15,6 +15,16 @@ abstract class BaseDestination {
    */
   const TAXONOMY_TERMS_CSV = 'taxonomy_terms.csv';
 
+  /**
+   * The entity bundles csv file name.
+   */
+  const ENTITY_BUNDLES_CSV = 'entity_bundles.csv';
+
+  /**
+   * The entity properties csv file name.
+   */
+  const ENTITY_PROPERTIES_CSV = 'entity_properties.csv';
+
   // To be initialized in the child classes.
   public $name;
 
