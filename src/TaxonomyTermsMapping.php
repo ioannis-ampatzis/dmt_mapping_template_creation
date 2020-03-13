@@ -59,6 +59,8 @@ class TaxonomyTermsMapping extends BaseDestination {
     // All action necessaries to perform the execution.
     $this->initialize();
 
+    $this->setColumnSize('A:E');
+
     // Skip header rows.
     fgetcsv($this->taxonomyTermFileSource, 1000, ',');
     fgetcsv($this->taxonomyTermFileSource, 1000, ',');

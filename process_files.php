@@ -15,9 +15,8 @@ if (!isset($argv[1])) {
 
 // Generate the taxonomy term mapping file.
 try {
-  // @todo uncomment!
-//  $taxonomy = new TaxonomyTermsMapping($argv[1]);
-//  $taxonomy->generate();
+  $taxonomy = new TaxonomyTermsMapping($argv[1]);
+  $taxonomy->generate();
 
   $assets = new AssetsMapping($argv[1]);
   $assets->generate();

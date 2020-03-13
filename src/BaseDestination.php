@@ -3,7 +3,12 @@
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
+/**
+ * Class BaseDestination
+ */
 abstract class BaseDestination {
 
   const DESTINATION = 'destination/';
@@ -25,6 +30,26 @@ abstract class BaseDestination {
    */
   const ENTITY_PROPERTIES_CSV = 'entity_properties.csv';
 
+  /**
+   * Header format array.
+   *
+   * @see https://phpspreadsheet.readthedocs.io/en/latest/topics/recipes/#formatting-cells
+   */
+  const HEADER_FORMAT =  [
+    'font' => [
+      'bold' => true,
+    ],
+    'alignment' => [
+      'vertical' => Alignment::HORIZONTAL_CENTER,
+    ],
+    'fill' => [
+      'fillType' => Fill::FILL_GRADIENT_LINEAR,
+      'color' => [
+        'argb' => 'cccccc',
+      ],
+    ],
+  ];
+
   // To be initialized in the child classes.
   public $name;
 
@@ -33,14 +58,27 @@ abstract class BaseDestination {
    */
   protected $spreadsheet;
 
+  /**
+   * Destination prefix, based on the site name.
+   *
+   * @var string
+   */
   protected $prefix;
 
+  /**
+   * BaseDestination constructor.
+   *
+   * @param string $prefix
+   */
   public function __construct($prefix = '') {
     $this->prefix = $prefix;
   }
 
   /**
    * Save the document.
+   *
+   * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+   * @throws \Exception
    */
   public function save() {
     if (!$this->spreadsheet) {
@@ -68,6 +106,9 @@ abstract class BaseDestination {
 
   /**
    * Copy the template into the new generated file in the destination.
+   *
+   * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+   * @throws \Exception
    */
   protected function copy_template() {
     $file = self::TEMPLATES . $this->name;
@@ -85,5 +126,45 @@ abstract class BaseDestination {
    */
   protected function initialize() {
     $this->copy_template();
+  }
+
+  /**
+   */
+  /**
+   * Set the header format (bold, colors, etc) to a cell.
+   *
+   * @param string $cells
+   *    The cell or range to apply the format.
+   *
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   */
+  protected function setHeaderFormatToCell($cells) {
+    $this->spreadsheet->getActiveSheet()->getStyle($cells)->applyFromArray(self::HEADER_FORMAT);
+    $columns = preg_replace("/[0-9]/", "", $cells);
+    $this->setColumnSize($columns);
+  }
+
+  /**
+   * Set auto width to the indicated columns.
+   *
+   * @param string $columns
+   *   Column or range to apply column width.
+   *
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   */
+  protected function setColumnSize($columns) {
+
+    // It's a single column.
+    $parts = explode(':', $columns);
+    if (!isset($parts[1])) {
+      $this->spreadsheet->getActiveSheet()->getColumnDimension($columns)->setAutoSize(true);
+      return;
+    }
+
+    // It's a range.
+    $letters = range($parts[0], $parts[1]);
+    foreach ($letters as $letter) {
+      $this->spreadsheet->getActiveSheet()->getColumnDimension($letter)->setAutoSize(true);
+    }
   }
 }
