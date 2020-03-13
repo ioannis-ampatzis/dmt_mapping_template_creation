@@ -13,13 +13,6 @@ class TaxonomyTermsMapping extends BaseDestination {
   const NAME = 'taxonomy_terms_mapping_template.xlsx';
 
   /**
-   * A pointer to the taxonomy term file source.
-   *
-   * @var resource
-   */
-  protected $taxonomyTermFileSource;
-
-  /**
    * The current row.
    *
    * @var int
@@ -42,24 +35,13 @@ class TaxonomyTermsMapping extends BaseDestination {
   /**
    * @throws \Exception
    */
-  protected function initialize() {
-    parent::initialize();
-
-    $this->taxonomyTermFileSource = fopen(self::SOURCES . $this->prefix . '/'. self::TAXONOMY_TERMS_CSV, 'r');
-    if (!$this->taxonomyTermFileSource) {
-      throw new Exception('The source file cannot be oppened.');
-    }
-  }
-
-  /**
-   * @throws \Exception
-   */
   public function generate() {
 
     // All action necessaries to perform the execution.
     $this->initialize();
 
-    $this->setColumnSize('A:E');
+    // The autosize doesn't work very well in this worksheet.
+    // $this->setColumnSize('A:E');
 
     // Skip header rows.
     fgetcsv($this->taxonomyTermFileSource, 1000, ',');

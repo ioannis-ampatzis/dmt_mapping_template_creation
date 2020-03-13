@@ -13,20 +13,6 @@ class AssetsMapping extends BaseDestination {
   const NAME = 'assets_mapping_template.xlsx';
 
   /**
-   * A pointer to the entity bundle file source.
-   *
-   * @var resource
-   */
-  protected $entityBundleFile;
-
-  /**
-   * A pointer to the entity properties file source.
-   *
-   * @var resource
-   */
-  protected $entityPropertiesFile;
-
-  /**
    * The current row.
    *
    * @var int
@@ -49,23 +35,6 @@ class AssetsMapping extends BaseDestination {
     parent::__construct($prefix);
     $this->name = self::NAME;
     $this->currentRow = 3;
-  }
-
-  /**
-   * @throws \Exception
-   */
-  public function initialize() {
-    parent::initialize();
-
-    $this->entityBundleFile = fopen(self::SOURCES . $this->prefix . '/'. self::ENTITY_BUNDLES_CSV, 'r');
-    if (!$this->entityBundleFile) {
-      throw new Exception('The source file cannot be oppened.');
-    }
-
-    $this->entityPropertiesFile = fopen(self::SOURCES . $this->prefix . '/'. self::ENTITY_PROPERTIES_CSV, 'r');
-    if (!$this->entityPropertiesFile) {
-      throw new Exception('The source file cannot be oppened.');
-    }
   }
 
   /**

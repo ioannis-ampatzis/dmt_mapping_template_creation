@@ -31,6 +31,27 @@ abstract class BaseDestination {
   const ENTITY_PROPERTIES_CSV = 'entity_properties.csv';
 
   /**
+   * A pointer to the taxonomy term file source.
+   *
+   * @var resource
+   */
+  protected $taxonomyTermFileSource;
+
+  /**
+   * A pointer to the entity bundle file source.
+   *
+   * @var resource
+   */
+  protected $entityBundleFile;
+
+  /**
+   * A pointer to the entity properties file source.
+   *
+   * @var resource
+   */
+  protected $entityPropertiesFile;
+
+  /**
    * Header format array.
    *
    * @see https://phpspreadsheet.readthedocs.io/en/latest/topics/recipes/#formatting-cells
@@ -50,10 +71,18 @@ abstract class BaseDestination {
     ],
   ];
 
-  // To be initialized in the child classes.
+  /**
+   * Name of the element that we're generating.
+   *
+   * To be initialized in the child classes.
+   *
+   * string @var
+   */
   public $name;
 
   /**
+   * The current spreadsheet.
+   *
    * @var Spreadsheet
    */
   protected $spreadsheet;
@@ -125,6 +154,22 @@ abstract class BaseDestination {
    * @throws \Exception
    */
   protected function initialize() {
+
+    $this->taxonomyTermFileSource = fopen(self::SOURCES . $this->prefix . '/'. self::TAXONOMY_TERMS_CSV, 'r');
+    if (!$this->taxonomyTermFileSource) {
+      throw new Exception('The source file cannot be oppened.');
+    }
+
+    $this->entityBundleFile = fopen(self::SOURCES . $this->prefix . '/'. self::ENTITY_BUNDLES_CSV, 'r');
+    if (!$this->entityBundleFile) {
+      throw new Exception('The source file cannot be oppened.');
+    }
+
+    $this->entityPropertiesFile = fopen(self::SOURCES . $this->prefix . '/'. self::ENTITY_PROPERTIES_CSV, 'r');
+    if (!$this->entityPropertiesFile) {
+      throw new Exception('The source file cannot be oppened.');
+    }
+
     $this->copy_template();
   }
 
