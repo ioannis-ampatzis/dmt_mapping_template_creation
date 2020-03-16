@@ -1,33 +1,29 @@
 <?php
 
-// @todo include all elements dynamically.
 require 'vendor/autoload.php';
-require 'src/TaxonomyTermsMapping.php';
-require 'src/AssetsMapping.php';
-require 'src/ContentTypeMapping.php';
 
-/*
- * $argv[1] => Name of the project. f.e. easme.
- */
-if (!isset($argv[1])) {
-  print 'You must indicate the name of the project.';
-  exit;
+// @todo include all elements dynamically.
+require_once 'src/TaxonomyTermsMapping.php';
+require_once 'src/ConfigManager.php';
+require_once 'src/EntityMapping.php';
+
+$config = new ConfigManager();
+
+foreach ($config->getSites() as $site_id => $site_name) {
+  try {
+
+    // Generate the taxonomy term mapping file.
+    $taxonomy = new TaxonomyTermsMapping($config, $site_id);
+    $taxonomy->generate();
+
+    // Entity files.
+    foreach ($config->getEntities() as $files) {
+
+      $entity_processor = new EntityMapping($config, $files['file name'], $files['entity name'], $site_id);
+      $entity_processor->generate();
+    }
+  }
+  catch (\Exception $e) {
+    print $e->getMessage();
+  }
 }
-
-// Generate the taxonomy term mapping file.
-try {
-  //@todo uncomment this.
-//  $taxonomy = new TaxonomyTermsMapping($argv[1]);
-//  $taxonomy->generate();
-//
-//  $assets = new AssetsMapping($argv[1]);
-//  $assets->generate();
-
-  $content = new ContentTypeMapping($argv[1]);
-  $content->generate();
-}
-catch (\Exception $e) {
-  print $e->getMessage();
-}
-
-// Generate the asset term mapping file.

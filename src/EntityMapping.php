@@ -7,7 +7,7 @@ require_once 'BaseDestination.php';
  *
  * Class BaseEntityMapping
  */
-abstract class BaseEntityMapping extends BaseDestination {
+class EntityMapping extends BaseDestination {
 
   /**
    * The current row.
@@ -33,11 +33,13 @@ abstract class BaseEntityMapping extends BaseDestination {
   /**
    * AssetsMapping constructor.
    *
-   * @param string $prefix
+   * @param string $siteName
    */
-  public function __construct($prefix = '') {
-    parent::__construct($prefix);
+  public function __construct($config, $name, $entityName, $siteName = '') {
+    parent::__construct($config, $siteName);
 
+    $this->name = $name;
+    $this->entityName = $entityName;
     $this->currentRow = 3;
   }
 

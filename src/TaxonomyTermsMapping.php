@@ -13,6 +13,7 @@ class TaxonomyTermsMapping extends BaseDestination {
   const NAME = 'taxonomy_terms_mapping_template.xlsx';
 
   /**
+  /**
    * The current row.
    *
    * @var int
@@ -22,10 +23,10 @@ class TaxonomyTermsMapping extends BaseDestination {
   /**
    * TaxonomyTermsMapping constructor.
    *
-   * @param string $prefix
+   * @param string $siteName
    */
-  public function __construct($prefix = '') {
-    parent::__construct($prefix);
+  public function __construct($config, $siteName = '') {
+    parent::__construct($config, $siteName);
     $this->name = self::NAME;
 
     // This template starts in A4.

@@ -11,10 +11,6 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
  */
 abstract class BaseDestination {
 
-  const DESTINATION = 'destination/';
-  const TEMPLATES = 'templates/';
-  const SOURCES = 'sources/';
-
   /*
    * The taxonomy terms csv file.
    */
@@ -88,19 +84,27 @@ abstract class BaseDestination {
   protected $spreadsheet;
 
   /**
-   * Destination prefix, based on the site name.
+   * Destination site name.
    *
    * @var string
    */
-  protected $prefix;
+  protected $siteName;
+
+  /**
+   * The current config.
+   *
+   * @var \ConfigManager
+   */
+  protected $config;
 
   /**
    * BaseDestination constructor.
    *
-   * @param string $prefix
+   * @param string $siteName
    */
-  public function __construct($prefix = '') {
-    $this->prefix = $prefix;
+  public function __construct($config, $siteName = '') {
+    $this->config = $config;
+    $this->siteName = $siteName;
   }
 
   /**
@@ -114,8 +118,13 @@ abstract class BaseDestination {
       throw new Exception('The spreadsheet is not propertly loaded. It cannot be saved.');
     }
 
+    $destination = $this->config->getDestinationFolder() . $this->siteName . '/';
+    if (!file_exists($destination)) {
+      mkdir($destination, 0777, true);
+    }
+
     $writer = new Xlsx($this->spreadsheet);
-    $writer->save(self::DESTINATION . $this->prefix . '_' . $this->name);
+    $writer->save($destination . $this->siteName . '_' . $this->name);
   }
 
   /**
@@ -140,8 +149,14 @@ abstract class BaseDestination {
    * @throws \Exception
    */
   protected function copy_template() {
-    $file = self::TEMPLATES . $this->name;
-    $newfile = self::DESTINATION . $this->prefix . '_' . $this->name;
+
+    $destination = $this->config->getDestinationFolder() . $this->siteName . '/';
+    if (!file_exists($destination)) {
+      mkdir($destination, 0777, true);
+    }
+
+    $file = $this->config->getTemplateFolder() . $this->name;
+    $newfile = $destination . $this->siteName . '_' . $this->name;
 
     if (!copy($file, $newfile)) {
       throw new Exception('The template cannot be copied.');
@@ -155,17 +170,17 @@ abstract class BaseDestination {
    */
   protected function initialize() {
 
-    $this->taxonomyTermFileSource = fopen(self::SOURCES . $this->prefix . '/'. self::TAXONOMY_TERMS_CSV, 'r');
+    $this->taxonomyTermFileSource = fopen($this->config->getSourceFolder() . $this->siteName . '/'. self::TAXONOMY_TERMS_CSV, 'r');
     if (!$this->taxonomyTermFileSource) {
       throw new Exception('The source file cannot be oppened.');
     }
 
-    $this->entityBundleFile = fopen(self::SOURCES . $this->prefix . '/'. self::ENTITY_BUNDLES_CSV, 'r');
+    $this->entityBundleFile = fopen($this->config->getSourceFolder() . $this->siteName . '/'. self::ENTITY_BUNDLES_CSV, 'r');
     if (!$this->entityBundleFile) {
       throw new Exception('The source file cannot be oppened.');
     }
 
-    $this->entityPropertiesFile = fopen(self::SOURCES . $this->prefix . '/'. self::ENTITY_PROPERTIES_CSV, 'r');
+    $this->entityPropertiesFile = fopen($this->config->getSourceFolder() . $this->siteName . '/'. self::ENTITY_PROPERTIES_CSV, 'r');
     if (!$this->entityPropertiesFile) {
       throw new Exception('The source file cannot be oppened.');
     }

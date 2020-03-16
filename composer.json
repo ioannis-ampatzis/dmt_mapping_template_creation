@@ -8,6 +8,7 @@
         }
     ],
     "require": {
-        "phpoffice/phpspreadsheet": "^1.11"
+        "phpoffice/phpspreadsheet": "^1.11",
+        "symfony/yaml": "^5.0"
     }
 }
