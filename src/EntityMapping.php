@@ -44,6 +44,8 @@ class EntityMapping extends BaseDestination {
   }
 
   /**
+   * Execute the file generation.
+   *
    * @throws \Exception
    */
   public function generate() {

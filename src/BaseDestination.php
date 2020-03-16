@@ -189,8 +189,6 @@ abstract class BaseDestination {
   }
 
   /**
-   */
-  /**
    * Set the header format (bold, colors, etc) to a cell.
    *
    * @param string $cells

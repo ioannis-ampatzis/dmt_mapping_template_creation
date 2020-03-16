@@ -1,6 +1,6 @@
 <?php
 
-require_once 'src/BaseDestination.php';
+require_once 'BaseDestination.php';
 
 /**
  * Class TaxonomyTermsMapping to generate the file xxx_taxonomy_terms_mapping_template.xlsx.

@@ -58,22 +58,47 @@ class ConfigManager {
     $this->entities = $config['entities'];
   }
 
+  /**
+   * Return the source folder value.
+   *
+   * @return string
+   */
   public function getSourceFolder() {
     return $this->sourceFolder;
   }
 
+  /**
+   * Return the destination folder value.
+   *
+   * @return string
+   */
   public function getDestinationFolder() {
     return $this->destinationFolder;
   }
 
+  /**
+   * Return the template folder value.
+   *
+   * @return string
+   */
   public function getTemplateFolder() {
     return $this->templateFolder;
   }
 
+  /**
+   * Return the list of sites.
+   *
+   * @return array
+   */
   public function getSites() {
     return $this->sites;
   }
 
+  /**
+   * Return the list of entities to generate xlsx.
+   *
+   * @return array
+   */
   public function getEntities() {
     return $this->entities;
   }
