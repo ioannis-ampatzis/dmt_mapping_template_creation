@@ -113,13 +113,14 @@ class EntityMapping extends BaseDestination {
       /*
        * sheet_name maximum size is 31 char, ensuring that it has a valid length.
        */
-      $processed[$machine_name] = [
+      $element = [
         'machine_name' => $machine_name,
         'label' => $label,
         'count' => $count,
         'original' => $bundle[2],
         'sheet_name' => substr('D7 - ' . $bundle[2], 0, 30),
       ];
+      array_unshift($processed, $element);
     }
 
     $this->bundles = $processed;
