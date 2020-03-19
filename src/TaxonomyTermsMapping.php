@@ -23,10 +23,15 @@ class TaxonomyTermsMapping extends BaseDestination {
   /**
    * TaxonomyTermsMapping constructor.
    *
-   * @param string $siteName
+   * @param \ConfigManager $config
+   *   The current config.
+   * @param string $site_label
+   *   The current site label.
+   * @param string $site_name
+   *   The current site name.
    */
-  public function __construct($config, $siteName = '') {
-    parent::__construct($config, $siteName);
+  public function __construct($config, $site_label, $site_name = '') {
+    parent::__construct($config, $site_label, $site_name);
     $this->name = self::NAME;
 
     // This template starts in A4.

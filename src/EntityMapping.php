@@ -31,12 +31,21 @@ class EntityMapping extends BaseDestination {
   protected $entityName;
 
   /**
-   * AssetsMapping constructor.
+   * EntityMapping constructor.
    *
+   * @param \ConfigManager $config
+   *   The current config.
+   * @param string $name
+   *   The name of the excel.
+   * @param string $entityName
+   *   The current entity name that are being process.
+   * @param string $siteLabel
+   *   The current site label.
    * @param string $siteName
+   *   The current site name.
    */
-  public function __construct($config, $name, $entityName, $siteName = '') {
-    parent::__construct($config, $siteName);
+  public function __construct($config, $name, $entityName, $siteLabel = '', $siteName = '') {
+    parent::__construct($config, $siteLabel, $siteName);
 
     $this->name = $name;
     $this->entityName = $entityName;
@@ -72,6 +81,9 @@ class EntityMapping extends BaseDestination {
     if (!$data) {
       throw new Exception(sprintf('No bundle founds for %s entity', $this->entityName));
     }
+
+    // Save the site name and label in the first cell.
+    $this->saveInCell('A1', $this->siteName . ' - ' . $this->siteLabel);
 
     // Save the total count of File entities.
     $this->saveInCell('A2', $data[1]);

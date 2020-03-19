@@ -98,13 +98,26 @@ abstract class BaseDestination {
   protected $config;
 
   /**
+   * Site Label.
+   *
+   * @var string
+   */
+  protected $siteLabel;
+
+  /**
    * BaseDestination constructor.
    *
+   * @param \ConfigManager $config
+   *   The current configuration.
+   * @param string $siteLabel
+   *   The site label.
    * @param string $siteName
+   *   The site machine name.
    */
-  public function __construct($config, $siteName = '') {
+  public function __construct($config, $siteLabel = '', $siteName = '') {
     $this->config = $config;
     $this->siteName = $siteName;
+    $this->siteLabel = $siteLabel;
   }
 
   /**

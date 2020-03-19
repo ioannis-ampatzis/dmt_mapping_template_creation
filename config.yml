@@ -3,7 +3,7 @@ destination: 'destination/'
 templates: 'templates/'
 
 sites:
-  olaf: 'olaf'
+  olaf: 'Anti-Fraud Office'
 
 entities:
   asset:
