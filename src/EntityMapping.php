@@ -113,17 +113,18 @@ class EntityMapping extends BaseDestination {
       /*
        * sheet_name maximum size is 31 char, ensuring that it has a valid length.
        */
-      $element = [
+      $bundles[$label] = [
         'machine_name' => $machine_name,
         'label' => $label,
         'count' => $count,
         'original' => $bundle[2],
         'sheet_name' => substr('D7 - ' . $bundle[2], 0, 30),
       ];
-      array_unshift($processed, $element);
     }
 
-    $this->bundles = $processed;
+    // sort it alphabetically.
+    sort($bundles);
+    $this->bundles = $bundles;
   }
 
   /**
@@ -134,9 +135,18 @@ class EntityMapping extends BaseDestination {
    */
   protected function generate_bundle_sheets() {
 
+    // First tab is in the position 2.
+    $position = 1;
     foreach ($this->bundles as $bundle) {
-      // Create the sheet always in the first second position (after the summary).
-      $worksheet = $this->spreadsheet->createSheet(1);
+
+      // Skip bundles without any content.
+      if ($bundle['count'] == 0) {
+        continue;
+      }
+
+      // Create the sheet in the correct position.
+      $worksheet = $this->spreadsheet->createSheet($position);
+      $position++;
 
       // Set the name and set as a current sheet to work.
       $worksheet->setTitle($bundle['sheet_name']);
