@@ -3,7 +3,7 @@ destination: 'destination/'
 templates: 'templates/'
 
 sites:
-  mossportal: 'Moss portal'
+  olaf: 'olaf'
 
 entities:
   asset:
@@ -11,4 +11,4 @@ entities:
     entity name: 'File (file)'
   nodes:
     file name: 'content_type_mapping_template.xlsx'
-    entity name: 'Node (node)'
+    entity name: 'Content (node)'
