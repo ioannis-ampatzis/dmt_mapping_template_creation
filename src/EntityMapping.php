@@ -134,8 +134,8 @@ class EntityMapping extends BaseDestination {
       ];
     }
 
-    // sort it alphabetically.
-    sort($bundles);
+    // Ensure that it has alphabetically ordered by the key.
+    ksort($bundles);
     $this->bundles = $bundles;
   }
 
