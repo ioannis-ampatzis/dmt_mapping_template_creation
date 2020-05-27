@@ -114,7 +114,6 @@ class EntityMapping extends BaseDestination {
    * Process bundle and extract the data from the CSV.
    */
   protected function processBundles() {
-    $processed = [];
     foreach ($this->bundles as $bundle) {
       $parts = explode(' (', $bundle[2]);
       $label = $parts[0];
@@ -130,7 +129,7 @@ class EntityMapping extends BaseDestination {
         'label' => $label,
         'count' => $count,
         'original' => $bundle[2],
-        'sheet_name' => substr('D7 - ' . preg_replace("/[^a-zA-Z0-9]/", "", $bundle[2]), 0, 30),
+        'sheet_name' => substr('D7 - ' . preg_replace("/[^a-zA-Z0-9_)(]/", " ", $bundle[2]), 0, 30),
       ];
     }
 
