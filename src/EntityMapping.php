@@ -130,7 +130,7 @@ class EntityMapping extends BaseDestination {
         'label' => $label,
         'count' => $count,
         'original' => $bundle[2],
-        'sheet_name' => substr('D7 - ' . $bundle[2], 0, 30),
+        'sheet_name' => substr('D7 - ' . preg_replace("/[^a-zA-Z0-9]/", "", $bundle[2]), 0, 30),
       ];
     }
 
