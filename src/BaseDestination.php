@@ -128,7 +128,7 @@ abstract class BaseDestination {
    */
   public function save() {
     if (!$this->spreadsheet) {
-      throw new Exception('The spreadsheet is not propertly loaded. It cannot be saved.');
+      throw new Exception('The spreadsheet is not properly loaded. It cannot be saved.');
     }
 
     $destination = $this->config->getDestinationFolder() . $this->siteName . '/';
@@ -185,17 +185,17 @@ abstract class BaseDestination {
 
     $this->taxonomyTermFileSource = fopen($this->config->getSourceFolder() . $this->siteName . '/'. self::TAXONOMY_TERMS_CSV, 'r');
     if (!$this->taxonomyTermFileSource) {
-      throw new Exception('The source file cannot be oppened.');
+      throw new Exception('The source file cannot be opened.');
     }
 
     $this->entityBundleFile = fopen($this->config->getSourceFolder() . $this->siteName . '/'. self::ENTITY_BUNDLES_CSV, 'r');
     if (!$this->entityBundleFile) {
-      throw new Exception('The source file cannot be oppened.');
+      throw new Exception('The source file cannot be opened.');
     }
 
     $this->entityPropertiesFile = fopen($this->config->getSourceFolder() . $this->siteName . '/'. self::ENTITY_PROPERTIES_CSV, 'r');
     if (!$this->entityPropertiesFile) {
-      throw new Exception('The source file cannot be oppened.');
+      throw new Exception('The source file cannot be opened.');
     }
 
     $this->copy_template();
